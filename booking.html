@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Reserve | The Central View</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:       #FFFFFF;
+            --bg-light: #F8F5F0;
+            --dark:     #1C1C1A;
+            --accent:   #C9B99A;
+            --border:   #E4E0D8;
+            --muted:    #A8A39A;
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans:  'DM Sans', sans-serif;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+        html, body { height:100%; overflow:hidden; background:var(--bg); font-family:var(--font-sans); color:var(--dark); -webkit-font-smoothing:antialiased; }
+
+        .shell { height:100vh; height:100dvh; display:flex; flex-direction:column; }
+
+        /* TOP BAR */
+        .topbar { flex-shrink:0; display:flex; align-items:center; justify-content:space-between; padding:18px 24px; border-bottom:1px solid var(--border); background:var(--bg); position:relative; z-index:10; }
+        .topbar-title { position:absolute; left:50%; transform:translateX(-50%); font-size:11px; letter-spacing:0.18em; text-transform:uppercase; font-weight:500; white-space:nowrap; }
+        .topbar-btn { background:none; border:none; cursor:pointer; font-size:22px; color:var(--dark); width:32px; height:32px; display:flex; align-items:center; justify-content:center; opacity:0.6; transition:opacity 0.2s; text-decoration:none; }
+        .topbar-btn:hover { opacity:1; }
+        .topbar-btn.hidden { visibility:hidden; }
+
+        /* STEPS */
+        .steps-wrap { flex:1; overflow:hidden; position:relative; }
+        .step { position:absolute; inset:0; overflow-y:auto; background:var(--bg); transition:transform 0.38s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease; will-change:transform; }
+        .step.active { transform:translateX(0);     opacity:1;  pointer-events:all; }
+        .step.prev   { transform:translateX(-100%); opacity:0;  pointer-events:none; }
+        .step.next   { transform:translateX(100%);  opacity:0;  pointer-events:none; }
+
+        /* BOTTOM BAR */
+        .bottombar { flex-shrink:0; padding:16px 24px 20px; border-top:1px solid var(--border); background:var(--bg); }
+        .next-btn { display:block; width:100%; padding:17px; background:var(--dark); color:#fff; border:none; font-family:var(--font-sans); font-size:11px; letter-spacing:0.2em; text-transform:uppercase; font-weight:500; cursor:pointer; border-radius:2px; transition:opacity 0.25s; }
+        .next-btn:disabled { opacity:0.28; cursor:not-allowed; }
+        .next-btn:not(:disabled):hover { opacity:0.82; }
+
+        /* STEP 1 — CALENDAR */
+        .cal-legend { display:flex; flex-wrap:wrap; gap:16px; padding:20px 24px 0; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); }
+        .leg-item { display:flex; align-items:center; gap:8px; }
+        .leg-dot { width:16px; height:16px; border-radius:50%; flex-shrink:0; }
+        .cal-scroll { padding:0 24px 40px; }
+        .cal-month-block { margin-top:32px; }
+        .cal-month-name { font-family:var(--font-serif); font-size:22px; font-style:italic; font-weight:300; margin-bottom:20px; }
+        .cal-weekdays { display:grid; grid-template-columns:repeat(7,1fr); margin-bottom:6px; }
+        .cal-wd { text-align:center; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); padding-bottom:8px; }
+        .cal-days-grid { display:grid; grid-template-columns:repeat(7,1fr); row-gap:4px; }
+        .cal-cell { display:flex; align-items:center; justify-content:center; height:48px; position:relative; cursor:pointer; user-select:none; -webkit-user-select:none; }
+        .cal-cell.empty { cursor:default; }
+        .cal-cell.past  { cursor:not-allowed; }
+        .cal-num { width:42px; height:42px; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:400; border-radius:50%; position:relative; z-index:2; transition:background 0.15s, color 0.15s; }
+        .cal-cell.past .cal-num { color:#D0CBC2; }
+        .cal-cell.blocked .cal-num { color:#C8C3BB; text-decoration:line-through; cursor:not-allowed; }
+        .cal-cell::before { content:''; position:absolute; top:50%; transform:translateY(-50%); height:42px; left:0; right:0; background:transparent; z-index:1; transition:background 0.15s; }
+        .cal-cell.in-range::before    { background:#E8F3F1; }
+        .cal-cell.range-start::before { background:#E8F3F1; left:50%; }
+        .cal-cell.range-end::before   { background:#E8F3F1; right:50%; }
+        .cal-cell.range-start .cal-num,
+        .cal-cell.range-end .cal-num,
+        .cal-cell.single-select .cal-num { background:var(--dark); color:#fff; }
+        .cal-cell:not(.past):not(.blocked):not(.range-start):not(.range-end):not(.single-select):hover .cal-num { background:var(--bg-light); }
+        .cal-cell.today:not(.range-start):not(.range-end) .cal-num::after { content:''; position:absolute; bottom:5px; left:50%; transform:translateX(-50%); width:4px; height:4px; border-radius:50%; background:var(--accent); }
+
+        /* STEP 2 — GUESTS */
+        .guests-wrap { padding:40px 24px; max-width:480px; margin:0 auto; }
+        .guests-title { font-family:var(--font-serif); font-size:36px; font-style:italic; font-weight:300; margin-bottom:8px; }
+        .guests-sub { font-size:13px; color:var(--muted); margin-bottom:40px; }
+        .guest-row { display:flex; justify-content:space-between; align-items:center; padding:22px 0; border-bottom:1px solid var(--border); }
+        .guest-row:first-of-type { border-top:1px solid var(--border); }
+        .guest-label-main { font-size:16px; font-weight:400; }
+        .guest-label-sub  { font-size:12px; color:var(--muted); margin-top:3px; }
+        .guest-counter { display:flex; align-items:center; gap:20px; }
+        .ctr-btn { width:36px; height:36px; border-radius:50%; border:1.5px solid var(--border); background:none; cursor:pointer; font-size:20px; color:var(--dark); display:flex; align-items:center; justify-content:center; transition:border-color 0.2s, opacity 0.2s; line-height:1; }
+        .ctr-btn:hover:not(:disabled) { border-color:var(--dark); }
+        .ctr-btn:disabled { opacity:0.22; cursor:not-allowed; }
+        .ctr-val { font-family:var(--font-serif); font-size:28px; font-weight:300; min-width:24px; text-align:center; }
+
+        /* STEP 3 — SUMMARY */
+        .summary-wrap { padding:32px 24px 40px; max-width:520px; margin:0 auto; }
+        .summary-title { font-family:var(--font-serif); font-size:36px; font-style:italic; font-weight:300; margin-bottom:32px; }
+        .sum-card { border:1px solid var(--border); border-radius:6px; overflow:hidden; margin-bottom:14px; }
+        .sum-card-inner { padding:20px; }
+        .sum-label { font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+        .sum-value { font-size:16px; font-weight:500; letter-spacing:0.04em; }
+        .sum-edit { float:right; background:none; border:none; cursor:pointer; color:var(--muted); font-size:16px; margin-top:-2px; transition:color 0.2s; }
+        .sum-edit:hover { color:var(--dark); }
+
+        /* STEP 4 — ROOMS */
+        .rooms-wrap { padding:24px 24px 40px; }
+        .rooms-header { margin-bottom:24px; }
+        .rooms-title { font-family:var(--font-serif); font-size:30px; font-style:italic; font-weight:300; margin-bottom:4px; }
+        .rooms-sub { font-size:12px; color:var(--muted); letter-spacing:0.04em; }
+        .room-card { border:1px solid var(--border); border-radius:6px; overflow:hidden; margin-bottom:18px; }
+        .room-card-img { width:100%; height:220px; object-fit:cover; display:block; }
+        .room-card-body { padding:20px; }
+        .room-card-name { font-family:var(--font-serif); font-size:22px; font-weight:300; margin-bottom:6px; }
+        .room-card-desc { font-size:13px; color:var(--muted); margin-bottom:18px; line-height:1.6; }
+        .room-card-footer { display:flex; justify-content:space-between; align-items:flex-end; border-top:1px solid var(--border); padding-top:16px; }
+        .room-price-per { font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:2px; }
+        .room-price-num { font-family:var(--font-serif); font-size:28px; font-weight:300; }
+        .room-price-total { font-size:11px; color:var(--muted); margin-top:2px; }
+        .room-select-btn { background:var(--dark); color:#fff; border:none; padding:12px 24px; font-family:var(--font-sans); font-size:10px; letter-spacing:0.16em; text-transform:uppercase; cursor:pointer; border-radius:2px; transition:opacity 0.2s; }
+        .room-select-btn:hover { opacity:0.82; }
+        .room-unavailable { opacity:0.4; pointer-events:none; }
+        .room-unavailable-badge { display:inline-block; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); border:1px solid var(--border); padding:6px 14px; border-radius:2px; }
+
+        /* SUCCESS */
+        .success-screen { display:none; position:fixed; inset:0; background:var(--bg-light); z-index:999; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px 24px; }
+        .success-screen.show { display:flex; }
+        .success-mark { font-size:40px; margin-bottom:28px; }
+        .success-h { font-family:var(--font-serif); font-size:42px; font-style:italic; font-weight:300; margin-bottom:14px; }
+        .success-p { font-size:14px; color:var(--muted); max-width:320px; line-height:1.7; margin-bottom:36px; }
+        .success-back { font-size:11px; letter-spacing:0.14em; text-transform:uppercase; text-decoration:none; color:var(--dark); border-bottom:1px solid var(--dark); padding-bottom:2px; }
+    </style>
+</head>
+<body>
+
+<!-- SUCCESS -->
+<div class="success-screen" id="successScreen">
+    <div class="success-mark">✦</div>
+    <h2 class="success-h" id="successTitle"></h2>
+    <p class="success-p" id="successText"></p>
+    <a href="index.html" class="success-back" id="successBack"></a>
+</div>
+
+<!-- SHELL -->
+<div class="shell">
+    <div class="topbar">
+        <button class="topbar-btn hidden" id="backBtn" onclick="goBack()">&#8592;</button>
+        <span class="topbar-title" id="topbarTitle"></span>
+        <a href="index.html" class="topbar-btn">&#215;</a>
+    </div>
+
+    <div class="steps-wrap">
+
+        <!-- STEP 1: CALENDAR -->
+        <div class="step active" id="step1">
+            <div class="cal-legend">
+                <div class="leg-item">
+                    <div class="leg-dot" style="background:var(--dark);"></div>
+                    <span id="legSelected"></span>
+                </div>
+                <div class="leg-item">
+                    <div class="leg-dot" style="background:#E8F3F1;border:1px solid #c5deda;"></div>
+                    <span id="legYourStay"></span>
+                </div>
+                <div class="leg-item">
+                    <div class="leg-dot" style="background:#EDEBE6;border:1px solid var(--border);"></div>
+                    <span id="legUnavailable"></span>
+                </div>
+            </div>
+            <div class="cal-scroll" id="calScroll"></div>
+        </div>
+
+        <!-- STEP 2: GUESTS -->
+        <div class="step next" id="step2">
+            <div class="guests-wrap">
+                <h2 class="guests-title" id="guestsTitle"></h2>
+                <p class="guests-sub" id="guestsSub"></p>
+                <div class="guest-row">
+                    <div>
+                        <div class="guest-label-main" id="adultsLabel"></div>
+                        <div class="guest-label-sub"  id="adultsAge"></div>
+                    </div>
+                    <div class="guest-counter">
+                        <button class="ctr-btn" id="adultsMinus" onclick="changeGuests('adults',-1)" disabled>−</button>
+                        <span class="ctr-val" id="adultsVal">1</span>
+                        <button class="ctr-btn" onclick="changeGuests('adults',1)">+</button>
+                    </div>
+                </div>
+                <div class="guest-row">
+                    <div>
+                        <div class="guest-label-main" id="childrenLabel"></div>
+                        <div class="guest-label-sub"  id="childrenAge"></div>
+                    </div>
+                    <div class="guest-counter">
+                        <button class="ctr-btn" id="childrenMinus" onclick="changeGuests('children',-1)" disabled>−</button>
+                        <span class="ctr-val" id="childrenVal">0</span>
+                        <button class="ctr-btn" onclick="changeGuests('children',1)">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 3: SUMMARY -->
+        <div class="step next" id="step3">
+            <div class="summary-wrap">
+                <h2 class="summary-title" id="summaryTitle"></h2>
+                <div class="sum-card">
+                    <div class="sum-card-inner">
+                        <div class="sum-label" id="sumDestLabel"></div>
+                        <div class="sum-value" id="sumDestVal"></div>
+                    </div>
+                </div>
+                <div class="sum-card">
+                    <div class="sum-card-inner">
+                        <div class="sum-label" id="sumDatesLabel"></div>
+                        <div class="sum-value" id="sumDates">—</div>
+                        <button class="sum-edit" onclick="jumpTo(1)">&#9998;</button>
+                    </div>
+                </div>
+                <div class="sum-card">
+                    <div class="sum-card-inner">
+                        <div class="sum-label" id="sumGuestsLabel"></div>
+                        <div class="sum-value" id="sumGuests">—</div>
+                        <button class="sum-edit" onclick="jumpTo(2)">&#9998;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 4: ROOMS -->
+        <div class="step next" id="step4">
+            <div class="rooms-wrap">
+                <div class="rooms-header">
+                    <h2 class="rooms-title" id="roomsTitle"></h2>
+                    <p class="rooms-sub" id="roomsSub"></p>
+                </div>
+                <div id="roomsList"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="bottombar">
+        <button class="next-btn" id="nextBtn" onclick="goNext()" disabled></button>
+    </div>
+</div>
+
+<script>
+// ================================================================
+// BLOCKED DATES — add "YYYY-MM-DD" per room to block them
+// ================================================================
+const BLOCKED = {
+    "city-view":      [],
+    "adriatic-suite": [],
+    "penthouse":      []
+};
+
+// ================================================================
+// TRANSLATIONS
+// ================================================================
+const T = {
+    en: {
+        steps:       { 1:'CHOOSE YOUR DATES', 2:'NUMBER OF GUESTS', 3:'PLAN YOUR STAY', 4:'AVAILABLE ROOMS' },
+        months:      ["January","February","March","April","May","June","July","August","September","October","November","December"],
+        weekdays:    ["Mo","Tu","We","Th","Fr","Sa","Su"],
+        legSelected: "SELECTED",
+        legYourStay: "YOUR STAY",
+        legUnavail:  "UNAVAILABLE",
+        next:        "NEXT",
+        checkRates:  "CHECK RATES",
+        guestsTitle: "Who's joining?",
+        guestsSub:   "Select the number of guests for your stay.",
+        adultsLabel: "Adults",
+        adultsAge:   "Age 13 or above",
+        childLabel:  "Children",
+        childAge:    "Under 13",
+        sumTitle:    "Plan your stay.",
+        sumDest:     "DESTINATION",
+        sumDestVal:  "VLORE, ALBANIA",
+        sumDates:    "DATES",
+        sumGuests:   "GUESTS",
+        roomsTitle:  "Available rooms.",
+        avgNight:    "Avg. per night",
+        totalFor:    "total for",
+        night:       "night",
+        nights:      "nights",
+        guest:       "guest",
+        guests:      "guests",
+        select:      "SELECT",
+        overCap:     "OVER CAPACITY",
+        unavail:     "UNAVAILABLE",
+        room1n: "City View Room",
+        room1d: "Wake to the rooftops and streets of Vlore. Light-filled, intimate, and perfectly positioned above the city's heartbeat.",
+        room2n: "Adriatic Suite",
+        room2d: "The sea fills every window. A generous suite designed for those who want the full breadth of the Albanian Riviera from their bed.",
+        room3n: "Penthouse — The 360°",
+        room3d: "The entire horizon belongs to you. City, sea, mountains — a private world above Vlore, reserved for those who want everything at once.",
+        successTitle: "Request received.",
+        successText:  "Thank you for choosing The Central View. We will confirm your reservation within 24 hours.",
+        successBack:  "Return to hotel"
+    },
+    sq: {
+        steps:       { 1:'ZGJIDHNI DATAT', 2:'NUMRI I MYSAFIRËVE', 3:'PLANIFIKONI QËNDRIMIN', 4:'DHOMA TË DISPONUESHME' },
+        months:      ["Janar","Shkurt","Mars","Prill","Maj","Qershor","Korrik","Gusht","Shtator","Tetor","Nëntor","Dhjetor"],
+        weekdays:    ["Hë","Ma","Më","En","Pr","Sh","Di"],
+        legSelected: "ZGJEDHUR",
+        legYourStay: "QËNDRIMI JUAJ",
+        legUnavail:  "I PADISPONUESHËM",
+        next:        "VAZHDO",
+        checkRates:  "SHIKO ÇMIMET",
+        guestsTitle: "Kush vjen me ju?",
+        guestsSub:   "Zgjidhni numrin e mysafirëve për qëndrimin tuaj.",
+        adultsLabel: "Të rritur",
+        adultsAge:   "Moshë 13 vjeç e lart",
+        childLabel:  "Fëmijë",
+        childAge:    "Nën 13 vjeç",
+        sumTitle:    "Planifikoni qëndrimin tuaj.",
+        sumDest:     "DESTINACIONI",
+        sumDestVal:  "VLORË, SHQIPËRI",
+        sumDates:    "DATAT",
+        sumGuests:   "MYSAFIRËT",
+        roomsTitle:  "Dhoma të disponueshme.",
+        avgNight:    "Mesatare për natë",
+        totalFor:    "total për",
+        night:       "natë",
+        nights:      "net",
+        guest:       "mysafir",
+        guests:      "mysafirë",
+        select:      "ZGJIDH",
+        overCap:     "KAPACITET I TEJKALUAR",
+        unavail:     "E PADISPONUESHME",
+        room1n: "Dhomë me Pamje nga Qyteti",
+        room1d: "Zgjohu me çatitë dhe rrugët e Vlorës. E ndriçuar, intime dhe e pozicionuar përsosur mbi zemrën e qytetit.",
+        room2n: "Apartament Adriatik",
+        room2d: "Deti mbush çdo dritare. Apartament bujar për ata që duan të gjithë gjerësinë e Rivierës Shqiptare nga krevati.",
+        room3n: "Penthouse — The 360°",
+        room3d: "E gjithë horizonti është i juaji. Qyteti, deti, malet — një botë private mbi Vlorë, e rezervuar për ata që duan gjithçka.",
+        successTitle: "Kërkesa u mor.",
+        successText:  "Faleminderit që zgjodhët The Central View. Do të konfirmojmë rezervimin tuaj brenda 24 orëve.",
+        successBack:  "Kthehu te hoteli"
+    },
+    it: {
+        steps:       { 1:'SCEGLI LE DATE', 2:'NUMERO DI OSPITI', 3:'PIANIFICA IL SOGGIORNO', 4:'CAMERE DISPONIBILI' },
+        months:      ["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"],
+        weekdays:    ["Lu","Ma","Me","Gi","Ve","Sa","Do"],
+        legSelected: "SELEZIONATO",
+        legYourStay: "IL TUO SOGGIORNO",
+        legUnavail:  "NON DISPONIBILE",
+        next:        "AVANTI",
+        checkRates:  "VERIFICA TARIFFE",
+        guestsTitle: "Chi si unisce?",
+        guestsSub:   "Seleziona il numero di ospiti per il tuo soggiorno.",
+        adultsLabel: "Adulti",
+        adultsAge:   "13 anni o più",
+        childLabel:  "Bambini",
+        childAge:    "Sotto i 13 anni",
+        sumTitle:    "Pianifica il soggiorno.",
+        sumDest:     "DESTINAZIONE",
+        sumDestVal:  "VALONA, ALBANIA",
+        sumDates:    "DATE",
+        sumGuests:   "OSPITI",
+        roomsTitle:  "Camere disponibili.",
+        avgNight:    "Media per notte",
+        totalFor:    "totale per",
+        night:       "notte",
+        nights:      "notti",
+        guest:       "ospite",
+        guests:      "ospiti",
+        select:      "SELEZIONA",
+        overCap:     "CAPACITÀ SUPERATA",
+        unavail:     "NON DISPONIBILE",
+        room1n: "Camera Vista Città",
+        room1d: "Svegliati sui tetti e le strade di Valona. Luminosa, intima e perfettamente posizionata sul cuore della città.",
+        room2n: "Suite Adriatica",
+        room2d: "Il mare riempie ogni finestra. Una suite generosa per chi vuole tutta l'ampiezza della Riviera Albanese dal letto.",
+        room3n: "Penthouse — The 360°",
+        room3d: "L'intero orizzonte ti appartiene. Città, mare, montagne — un mondo privato sopra Valona, riservato a chi vuole tutto.",
+        successTitle: "Richiesta ricevuta.",
+        successText:  "Grazie per aver scelto The Central View. Confermeremo la prenotazione entro 24 ore.",
+        successBack:  "Torna all'hotel"
+    }
+};
+
+// ================================================================
+// ROOMS DATA (lang-neutral ids and prices, names/descs from T)
+// ================================================================
+const ROOMS = [
+    { id:"city-view",      tKey:"room1", price:120, img:"https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=900&auto=format&fit=crop", maxGuests:2 },
+    { id:"adriatic-suite", tKey:"room2", price:200, img:"https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=900&auto=format&fit=crop", maxGuests:3 },
+    { id:"penthouse",      tKey:"room3", price:380, img:"https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=900&auto=format&fit=crop", maxGuests:4 }
+];
+
+// ================================================================
+// STATE
+// ================================================================
+let lang        = localStorage.getItem('lang') || 'en';
+if (!T[lang]) lang = 'en'; // safety fallback
+
+let currentStep = 1;
+let checkIn     = null;
+let checkOut    = null;
+let selecting   = 'in';
+let adults      = 1;
+let children    = 0;
+
+// ================================================================
+// APPLY LANGUAGE — updates all static text
+// ================================================================
+function applyLang() {
+    const t = T[lang];
+    // Legend
+    document.getElementById('legSelected').textContent   = t.legSelected;
+    document.getElementById('legYourStay').textContent   = t.legYourStay;
+    document.getElementById('legUnavailable').textContent = t.legUnavail;
+    // Guests step
+    document.getElementById('guestsTitle').textContent   = t.guestsTitle;
+    document.getElementById('guestsSub').textContent     = t.guestsSub;
+    document.getElementById('adultsLabel').textContent   = t.adultsLabel;
+    document.getElementById('adultsAge').textContent     = t.adultsAge;
+    document.getElementById('childrenLabel').textContent = t.childLabel;
+    document.getElementById('childrenAge').textContent   = t.childAge;
+    // Summary step
+    document.getElementById('summaryTitle').textContent  = t.sumTitle;
+    document.getElementById('sumDestLabel').textContent  = t.sumDest;
+    document.getElementById('sumDestVal').textContent    = t.sumDestVal;
+    document.getElementById('sumDatesLabel').textContent = t.sumDates;
+    document.getElementById('sumGuestsLabel').textContent= t.sumGuests;
+    // Rooms step
+    document.getElementById('roomsTitle').textContent    = t.roomsTitle;
+    // Success screen
+    document.getElementById('successTitle').textContent  = t.successTitle;
+    document.getElementById('successText').textContent   = t.successText;
+    document.getElementById('successBack').textContent   = t.successBack;
+    // Topbar + next btn
+    updateTopbar();
+    updateNextBtn();
+}
+
+// ================================================================
+// INIT
+// ================================================================
+document.addEventListener('DOMContentLoaded', () => {
+    applyLang();
+    buildCalendars();
+});
+
+// ================================================================
+// CALENDAR — uses T[lang].months and T[lang].weekdays
+// ================================================================
+function buildCalendars() {
+    const t      = T[lang];
+    const scroll = document.getElementById('calScroll');
+    scroll.innerHTML = '';
+    const today      = new Date(); today.setHours(0,0,0,0);
+    const sy = today.getFullYear(), sm = today.getMonth();
+
+    for (let m = 0; m < 13; m++) {
+        let y = sy, mo = sm + m;
+        if (mo > 11) { y++; mo -= 12; }
+
+        const block = document.createElement('div');
+        block.className = 'cal-month-block';
+
+        const title = document.createElement('div');
+        title.className = 'cal-month-name';
+        title.textContent = `${t.months[mo]} ${y}`;
+        block.appendChild(title);
+
+        const wdRow = document.createElement('div');
+        wdRow.className = 'cal-weekdays';
+        t.weekdays.forEach(d => {
+            const wd = document.createElement('div');
+            wd.className = 'cal-wd';
+            wd.textContent = d;
+            wdRow.appendChild(wd);
+        });
+        block.appendChild(wdRow);
+
+        const grid = document.createElement('div');
+        grid.className = 'cal-days-grid';
+        const firstDow = (new Date(y, mo, 1).getDay() + 6) % 7;
+        const daysInMo = new Date(y, mo + 1, 0).getDate();
+
+        for (let i = 0; i < firstDow; i++) {
+            const e = document.createElement('div');
+            e.className = 'cal-cell empty';
+            grid.appendChild(e);
+        }
+
+        for (let d = 1; d <= daysInMo; d++) {
+            const date = new Date(y, mo, d); date.setHours(0,0,0,0);
+            const ds   = fmt(date);
+            const cell = document.createElement('div');
+            cell.className = 'cal-cell';
+            cell.dataset.date = ds;
+            const num = document.createElement('div');
+            num.className = 'cal-num';
+            num.textContent = d;
+            cell.appendChild(num);
+            if (date < today) cell.classList.add('past');
+            if (date.getTime() === today.getTime()) cell.classList.add('today');
+            cell.addEventListener('click', () => onDayClick(cell, date, ds));
+            grid.appendChild(cell);
+        }
+
+        block.appendChild(grid);
+        scroll.appendChild(block);
+    }
+    refreshCalStyles();
+}
+
+function onDayClick(cell, date, ds) {
+    if (cell.classList.contains('past')) return;
+    const allBlocked = Object.values(BLOCKED).every(a => a.includes(ds));
+    if (allBlocked) return;
+
+    if (selecting === 'in') {
+        checkIn = date; checkOut = null; selecting = 'out';
+    } else {
+        if (date <= checkIn) { checkIn = date; checkOut = null; selecting = 'out'; }
+        else { checkOut = date; selecting = 'in'; }
+    }
+    refreshCalStyles();
+    updateNextBtn();
+}
+
+function refreshCalStyles() {
+    document.querySelectorAll('.cal-cell').forEach(cell => {
+        cell.classList.remove('range-start','range-end','in-range','single-select','blocked');
+        const ds = cell.dataset.date;
+        if (!ds) return;
+        const date = new Date(ds);
+        const isBlocked = Object.values(BLOCKED).every(a => a.includes(ds));
+        if (isBlocked && !cell.classList.contains('past')) { cell.classList.add('blocked'); return; }
+        if (!checkIn) return;
+        const ci = fmt(checkIn), co = checkOut ? fmt(checkOut) : null;
+        if (ci && co) {
+            if (ds === ci)                         cell.classList.add('range-start');
+            else if (ds === co)                    cell.classList.add('range-end');
+            else if (date > checkIn && date < checkOut) cell.classList.add('in-range');
+        } else if (ds === ci) cell.classList.add('range-start');
+    });
+}
+
+// ================================================================
+// GUESTS
+// ================================================================
+function changeGuests(type, delta) {
+    if (type === 'adults') {
+        adults = Math.max(1, adults + delta);
+        document.getElementById('adultsVal').textContent = adults;
+        document.getElementById('adultsMinus').disabled = adults <= 1;
+    } else {
+        children = Math.max(0, children + delta);
+        document.getElementById('childrenVal').textContent = children;
+        document.getElementById('childrenMinus').disabled = children <= 0;
+    }
+}
+
+// ================================================================
+// NAVIGATION
+// ================================================================
+function goNext() {
+    if (currentStep === 1 && (!checkIn || !checkOut)) return;
+    if (currentStep === 3) buildRooms();
+    const from = currentStep;
+    currentStep++;
+    transitionSteps(from, currentStep);
+    updateTopbar();
+    updateNextBtn();
+    if (currentStep === 3) fillSummary();
+}
+
+function goBack() {
+    if (currentStep <= 1) return;
+    const from = currentStep;
+    currentStep--;
+    transitionSteps(from, currentStep, true);
+    updateTopbar();
+    updateNextBtn();
+}
+
+function jumpTo(step) {
+    const from = currentStep;
+    currentStep = step;
+    transitionSteps(from, currentStep, step < from);
+    updateTopbar();
+    updateNextBtn();
+}
+
+function transitionSteps(from, to, backwards) {
+    const fromEl = document.getElementById(`step${from}`);
+    const toEl   = document.getElementById(`step${to}`);
+    fromEl.classList.remove('active');
+    fromEl.classList.add(backwards ? 'next' : 'prev');
+    toEl.classList.remove('prev','next');
+    toEl.classList.add('active');
+    toEl.scrollTop = 0;
+}
+
+function updateTopbar() {
+    const t = T[lang];
+    document.getElementById('topbarTitle').textContent = t.steps[currentStep] || '';
+    document.getElementById('backBtn').classList.toggle('hidden', currentStep === 1);
+}
+
+function updateNextBtn() {
+    const t   = T[lang];
+    const btn = document.getElementById('nextBtn');
+    btn.style.display = '';
+    if (currentStep === 1) {
+        btn.disabled    = !(checkIn && checkOut);
+        btn.textContent = t.next;
+    } else if (currentStep === 2) {
+        btn.disabled    = false;
+        btn.textContent = t.next;
+    } else if (currentStep === 3) {
+        btn.disabled    = false;
+        btn.textContent = t.checkRates;
+    } else if (currentStep === 4) {
+        btn.style.display = 'none';
+    }
+}
+
+// ================================================================
+// SUMMARY
+// ================================================================
+function fillSummary() {
+    const t = T[lang];
+    const nights = Math.round((checkOut - checkIn) / 86400000);
+    const locale = lang === 'sq' ? 'sq-AL' : lang === 'it' ? 'it-IT' : 'en-GB';
+    const ci = checkIn.toLocaleDateString(locale,  { day:'numeric', month:'short' });
+    const co = checkOut.toLocaleDateString(locale, { day:'numeric', month:'short', year:'numeric' });
+    document.getElementById('sumDates').textContent =
+        `${ci.toUpperCase()} — ${co.toUpperCase()}  (${nights} ${nights !== 1 ? t.nights : t.night})`;
+
+    const totalG = adults + children;
+    let g = `${adults} ${t.adultsLabel.toUpperCase()}`;
+    if (children > 0) g += ` + ${children} ${t.childLabel.toUpperCase()}`;
+    document.getElementById('sumGuests').textContent = g;
+}
+
+// ================================================================
+// ROOMS
+// ================================================================
+function buildRooms() {
+    const t = T[lang];
+    const nights      = Math.round((checkOut - checkIn) / 86400000);
+    const totalGuests = adults + children;
+    const list        = document.getElementById('roomsList');
+    list.innerHTML    = '';
+
+    const locale = lang === 'sq' ? 'sq-AL' : lang === 'it' ? 'it-IT' : 'en-GB';
+    const ci = checkIn.toLocaleDateString(locale,  { day:'numeric', month:'short' });
+    const co = checkOut.toLocaleDateString(locale, { day:'numeric', month:'short' });
+    document.getElementById('roomsSub').textContent =
+        `${ci} – ${co}  ·  ${nights} ${nights !== 1 ? t.nights : t.night}  ·  ${totalGuests} ${totalGuests !== 1 ? t.guests : t.guest}`;
+
+    ROOMS.forEach(room => {
+        const blocked = BLOCKED[room.id] || [];
+        let unavailInRange = false;
+        let d = new Date(checkIn);
+        while (d < checkOut) {
+            if (blocked.includes(fmt(d))) { unavailInRange = true; break; }
+            d.setDate(d.getDate() + 1);
+        }
+        const overCap    = totalGuests > room.maxGuests;
+        const isUnavail  = unavailInRange || overCap;
+        const total      = nights * room.price;
+        const roomName   = t[room.tKey + 'n'];
+        const roomDesc   = t[room.tKey + 'd'];
+
+        const card = document.createElement('div');
+        card.className = 'room-card' + (isUnavail ? ' room-unavailable' : '');
+        card.innerHTML = `
+            <img class="room-card-img" src="${room.img}" alt="${roomName}" loading="lazy">
+            <div class="room-card-body">
+                <div class="room-card-name">${roomName}</div>
+                <div class="room-card-desc">${roomDesc}</div>
+                <div class="room-card-footer">
+                    <div>
+                        <div class="room-price-per">${t.avgNight}</div>
+                        <div class="room-price-num">€${room.price}</div>
+                        <div class="room-price-total">€${total} ${t.totalFor} ${nights} ${nights !== 1 ? t.nights : t.night}</div>
+                    </div>
+                    ${isUnavail
+                        ? `<span class="room-unavailable-badge">${overCap ? t.overCap : t.unavail}</span>`
+                        : `<button class="room-select-btn" onclick="selectRoom('${room.id}')">${t.select}</button>`
+                    }
+                </div>
+            </div>`;
+        list.appendChild(card);
+    });
+
+    document.getElementById('nextBtn').style.display = 'none';
+}
+
+function selectRoom(id) {
+    document.getElementById('successScreen').classList.add('show');
+}
+
+// ================================================================
+// HELPERS
+// ================================================================
+function fmt(date) {
+    return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Story | The Central View · Vlorë, Albania</title>
+  <meta name="description" content="The story of The Central View — how a family from Vlorë built the boutique hotel they always wished existed. A love letter to Albania's Adriatic coast.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_shared.css">
+  <style>
+    /* Story page — editorial, long-read feel */
+    .story-hero {
+      background: var(--bg-light);
+      padding: 200px 40px 100px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .story-hero .chapter { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 40px; }
+    .story-hero h1 {
+      font-size: clamp(56px, 9vw, 116px);
+      line-height: 0.95;
+      margin-bottom: 60px;
+    }
+    .story-hero-standfirst {
+      font-family: var(--font-serif);
+      font-size: clamp(20px, 2.5vw, 28px);
+      font-style: italic;
+      color: #555;
+      max-width: 680px;
+      line-height: 1.5;
+      border-left: 2px solid var(--accent);
+      padding-left: 32px;
+    }
+
+    .story-divider {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding-bottom: 60px;
+    }
+    .story-divider-line { flex: 1; height: 1px; background: var(--border); }
+    .story-divider-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+    /* Full-width image */
+    .story-full-img {
+      width: 100%;
+      height: 60vh;
+      overflow: hidden;
+    }
+    .story-full-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Story chapters */
+    .story-body {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 100px 40px;
+    }
+    .story-chapter-label {
+      font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 28px; display: block;
+    }
+    .story-body h2 {
+      font-size: clamp(36px, 5vw, 56px);
+      margin-bottom: 32px;
+      line-height: 1.1;
+    }
+    .story-body p {
+      font-size: 18px;
+      line-height: 1.9;
+      color: #444;
+      margin-bottom: 28px;
+    }
+    .story-body p:first-of-type::first-letter {
+      font-family: var(--font-serif);
+      font-size: 72px;
+      line-height: 0.8;
+      float: left;
+      margin-right: 8px;
+      margin-top: 8px;
+      color: var(--accent);
+    }
+
+    .story-pull-quote {
+      border-left: 3px solid var(--accent);
+      padding: 8px 0 8px 36px;
+      margin: 60px 0;
+    }
+    .story-pull-quote blockquote {
+      font-family: var(--font-serif);
+      font-size: clamp(24px, 3vw, 34px);
+      font-style: italic;
+      line-height: 1.4;
+      color: var(--text-main);
+    }
+    .story-pull-quote cite { display: block; font-size: 13px; color: var(--text-muted); margin-top: 12px; font-style: normal; }
+
+    /* Image with caption */
+    .story-img-block { margin: 60px -80px; }
+    .story-img-block img { width: 100%; height: 50vh; object-fit: cover; }
+    .story-img-caption { font-size: 12px; color: var(--text-muted); padding: 12px 80px 0; letter-spacing: 0.06em; }
+
+    /* Chapter break */
+    .chapter-break {
+      text-align: center;
+      padding: 60px 0;
+      font-family: var(--font-serif);
+      font-size: 32px;
+      color: var(--border);
+    }
+
+    /* End CTA */
+    .story-end {
+      background: var(--bg-dark);
+      color: var(--white);
+      padding: 120px 40px;
+      text-align: center;
+    }
+    .story-end h2 { font-size: clamp(40px, 6vw, 72px); margin-bottom: 20px; }
+    .story-end p { color: rgba(255,255,255,0.6); font-size: 18px; margin-bottom: 48px; max-width: 480px; margin-left: auto; margin-right: auto; }
+    .story-end-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    @media (max-width: 800px) {
+      .story-hero { padding: 160px 24px 60px; }
+      .story-divider { padding: 0 24px 40px; }
+      .story-body { padding: 72px 24px; }
+      .story-img-block { margin: 40px 0; }
+      .story-img-caption { padding: 10px 0 0; }
+      .story-end { padding: 80px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar" class="opaque-always">
+    <a href="index.html" class="nav-logo-text">The Central View</a>
+    <div class="nav-links">
+      <a href="city-view.html">Rooms</a>
+      <a href="location.html">Location</a>
+      <a href="about.html">About</a>
+      <a href="reviews.html">Reviews</a>
+      <a href="booking.html" class="nav-book">Reserve</a>
+    </div>
+    <div class="nav-hamburger" id="hamburger"><span></span><span></span></div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <span class="mobile-close" id="mobileClose">✕</span>
+    <a href="index.html">Home</a>
+    <a href="city-view.html">Rooms</a>
+    <a href="location.html">Location</a>
+    <a href="about.html">About</a>
+    <a href="reviews.html">Reviews</a>
+    <a href="faq.html">FAQ</a>
+    <a href="booking.html">Reserve →</a>
+  </div>
+
+  <!-- HERO -->
+  <header class="story-hero reveal">
+    <div class="chapter">The Story</div>
+    <h1>How a view<br>became a hotel.</h1>
+    <p class="story-hero-standfirst">A family from Vlorë. A building with a view nobody wanted. And the stubborn belief that Albania's coast deserved something beautiful.</p>
+  </header>
+
+  <div class="story-divider">
+    <div class="story-divider-line"></div>
+    <div class="story-divider-dot"></div>
+    <div class="story-divider-line"></div>
+  </div>
+
+  <!-- FULL IMAGE -->
+  <div class="story-full-img">
+    <img src="https://res.cloudinary.com/dr63qmw21/image/upload/v1780254562/1_v2cave.jpg" alt="Vlorë bay seen from above at dusk">
+  </div>
+
+  <!-- CHAPTER 1 -->
+  <div class="story-body">
+    <span class="story-chapter-label">Chapter I · The Building</span>
+    <h2>The view everyone<br>could see but nobody<br>thought to use.</h2>
+
+    <p>The building had stood half-finished for eleven years when the family first looked at it seriously. A concrete shell on a rise above the old city. Every contractor who visited pointed out the problems: the exposed rebar, the water damage on the upper floors, the awkward floor plans that didn't match any standard hotel layout.</p>
+
+    <p>What they all missed — or chose not to mention — was the view. From the sixth floor, on a clear morning, you could see the entire sweep of the Adriatic from the bay of Vlorë south to the first peaks of the Karaburun Peninsula. On the other side, the hinterland rose in green-grey ridges toward the Albanian Alps. It was, without exaggeration, one of the best views in the country.</p>
+
+    <div class="story-pull-quote">
+      <blockquote>"Everyone told us the problems. We kept looking at the view."</blockquote>
+    </div>
+
+    <p>The decision to buy was made not in a boardroom but on that sixth-floor slab, watching the sun go down over the Adriatic with a bottle of local raki, talking about what the city deserved and what kind of guests it might one day receive.</p>
+
+    <span class="story-chapter-label" style="margin-top:60px">Chapter II · The Build</span>
+    <h2>Three years.<br>Local hands.<br>No shortcuts.</h2>
+
+    <p>The renovation took thirty-eight months. It was longer than planned and more expensive than budgeted, as these things tend to be when you refuse to cut corners. Every room was designed individually — no two have exactly the same layout or light. The stone was sourced from Albanian quarries. The ironwork came from a workshop in Gjirokastër whose master craftsman had been making doors and balustrades for fifty years.</p>
+
+    <p>The design language was kept deliberately restrained. The building's bones — the raw concrete, the height, the drama of the setting — were the architecture. The interiors were asked simply to stay out of the way: natural linens, Adriatic stone, warm woods, and light. Always, light.</p>
+
+    <div class="story-img-block">
+      <img src="https://res.cloudinary.com/dr63qmw21/image/upload/v1780254562/1_v2cave.jpg" alt="Interior of The Central View during renovation">
+      <div class="story-img-caption">The upper floors under restoration, 2022 · Photo: Archive</div>
+    </div>
+
+    <p>The name came later, almost accidentally, when a visitor who had been watching the construction for months asked what they were going to call it. Looking out at the bay — at the geographical centre of the view — the answer seemed obvious.</p>
+
+    <div class="chapter-break">· · ·</div>
+
+    <span class="story-chapter-label">Chapter III · The Opening</span>
+    <h2>The guests who<br>came, and why<br>they stayed.</h2>
+
+    <p>The hotel opened quietly, in the shoulder season, without a PR campaign or a launch event. The first guests found it the way most guests still find it — through a recommendation, through Instagram, through a friend who had visited Albania and couldn't stop talking about it.</p>
+
+    <p>Word spread slowly, the way good things do. A French couple who had spent two nights in the Adriatic Suite rebooked before they left for six nights the following summer. An Italian travel writer mentioned it in a piece about the "last undiscovered coast of Europe." A British family returned for their third consecutive year.</p>
+
+    <div class="story-pull-quote">
+      <blockquote>"Albania doesn't need more tourism. It needs the right kind. We are trying to be the right kind."</blockquote>
+      <cite>— The Central View Team</cite>
+    </div>
+
+    <p>The team is small and has remained small by design. The head of housekeeping has been with the hotel since the first week. The breakfast chef — who has worked out a menu that changes with the seasons and never compromises on the quality of what comes from local farms — is a local who trained in Tirana and came home. The front desk team speaks four languages between them, but more importantly they remember your name, your coffee order, and whether you prefer your towels folded or rolled.</p>
+
+    <p>This is not accidental. It is the result of paying people well, treating them as partners in the project, and understanding that a hotel is only as good as the people who work in it every day.</p>
+
+    <span class="story-chapter-label" style="margin-top:60px">Looking Forward</span>
+    <h2>The ongoing<br>experiment.</h2>
+
+    <p>We are not a finished product. Every season we learn something — a room that needs better blackout curtains, a breakfast item the guests love that we should make permanent, a local guide we should be recommending more, a welcome experience that could be warmer.</p>
+
+    <p>Vlorë is changing. The city is growing in confidence, in infrastructure, in the quality of what it offers. The Albanian Riviera is being discovered — carefully, gradually, by people who prefer something real over something packaged. We intend to grow with that change, at its pace, in its spirit.</p>
+
+    <p>The view is still there. Every morning. Still the best in the city. And we are still, in the most fundamental sense, standing on that sixth-floor slab watching the light change over the Adriatic, grateful that we didn't listen to the people who only saw the problems.</p>
+  </div>
+
+  <!-- END CTA -->
+  <div class="story-end">
+    <h2>Come and see<br>for yourself.</h2>
+    <p>The story continues with every guest who arrives. We'd love for yours to be part of it.</p>
+    <div class="story-end-btns">
+      <a href="booking.html" class="btn-dark" style="background:var(--white); color:var(--bg-dark)">Reserve a Room →</a>
+      <a href="https://wa.me/35569123456" class="btn-whatsapp">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Say Hello
+      </a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">The Central View</div>
+        <p class="footer-brand-desc">A boutique hotel perched above Vlorë, Albania — where the Adriatic meets the mountains.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Stay</div>
+        <ul>
+          <li><a href="city-view.html">City View Room</a></li>
+          <li><a href="adriatic-suite.html">Adriatic Suite</a></li>
+          <li><a href="penthouse-360.html">Penthouse 360°</a></li>
+          <li><a href="booking.html">Book Direct</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Explore</div>
+        <ul>
+          <li><a href="location.html">Location</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="story.html">Our Story</a></li>
+          <li><a href="reviews.html">Reviews</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Contact</div>
+        <ul>
+          <li><a href="tel:+35569123456">+355 69 123 4567</a></li>
+          <li><a href="mailto:stay@thecentralview.al">stay@thecentralview.al</a></li>
+          <li><a href="https://wa.me/35569123456">WhatsApp Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 The Central View. All rights reserved.</span>
+      <span><a href="privacy-policy.html" style="color:rgba(255,255,255,0.35)">Privacy Policy</a></span>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      
+    });
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.add('open');
+    });
+    document.getElementById('mobileClose').addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.remove('open');
+    });
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

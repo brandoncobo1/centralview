@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About | The Central View · Boutique Hotel Vlorë</title>
+  <meta name="description" content="The Central View is a 21-room boutique hotel in the heart of Vlorë, Albania. Learn about our philosophy, our commitment to Albanian hospitality, and why we exist.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_shared.css">
+
+  <style>
+    .about-hero {
+      min-height: 100vh;
+      background: var(--bg-dark);
+      color: var(--white);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+      padding: 160px 0 0;
+      overflow: hidden;
+    }
+    .about-hero-left {
+      padding: 0 0 100px 80px;
+    }
+    .about-hero-left h1 {
+      font-size: clamp(52px, 6vw, 78px);
+      margin-bottom: 32px;
+      line-height: 1.05;
+    }
+    .about-hero-left .lead {
+      font-size: 17px;
+      color: rgba(255,255,255,0.6);
+      max-width: 420px;
+      line-height: 1.8;
+    }
+    .about-hero-right {
+      height: 80vh;
+      position: relative;
+      overflow: hidden;
+    }
+    .about-hero-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.7;
+    }
+
+    /* PHILOSOPHY */
+    .philosophy { padding: 120px 0; }
+    .philosophy-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: center;
+    }
+    .philosophy-text h2 { font-size: clamp(40px, 5vw, 60px); margin-bottom: 32px; }
+    .philosophy-text p { font-size: 16px; color: #555; line-height: 1.9; margin-bottom: 20px; }
+
+    .philosophy-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    .stat-block {
+      background: var(--bg-light);
+      padding: 48px 40px;
+    }
+    .stat-block:nth-child(2) { background: var(--bg-dark); color: var(--white); }
+    .stat-block:nth-child(3) { background: var(--accent); }
+    .stat-block-num {
+      font-family: var(--font-serif);
+      font-size: 72px;
+      line-height: 1;
+      letter-spacing: -2px;
+      display: block;
+    }
+    .stat-block-label {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: inherit;
+      opacity: 0.6;
+      margin-top: 8px;
+      display: block;
+    }
+    .stat-block:nth-child(2) .stat-block-label { opacity: 0.5; }
+
+    /* VALUES */
+    .values { background: var(--bg-light); padding: 100px 0; }
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 60px;
+    }
+    .value-card {
+      background: var(--white);
+      padding: 48px 40px;
+    }
+    .value-num {
+      font-family: var(--font-serif);
+      font-size: 13px;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 24px;
+      display: block;
+    }
+    .value-card h3 { font-size: 28px; margin-bottom: 16px; }
+    .value-card p { font-size: 14px; color: #666; line-height: 1.8; }
+
+    /* PHOTO STRIP */
+    .photo-strip {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      height: 500px;
+      gap: 3px;
+    }
+    .photo-strip-img { overflow: hidden; }
+    .photo-strip-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
+    .photo-strip-img:hover img { transform: scale(1.04); }
+
+    /* TEAM */
+    .team { padding: 100px 0; }
+    .team-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 100px;
+      align-items: center;
+    }
+    .team-quote {
+      font-family: var(--font-serif);
+      font-size: clamp(32px, 4vw, 50px);
+      font-style: italic;
+      line-height: 1.25;
+      position: relative;
+      padding-left: 40px;
+    }
+    .team-quote::before {
+      content: '"';
+      font-size: 180px;
+      line-height: 0.6;
+      color: var(--accent);
+      opacity: 0.3;
+      position: absolute;
+      left: -20px;
+      top: 20px;
+    }
+    .team-body h2 { font-size: clamp(36px, 4vw, 52px); margin-bottom: 28px; }
+    .team-body p { font-size: 16px; color: #555; line-height: 1.9; margin-bottom: 20px; }
+    .team-body .btn-outline-dark { margin-top: 16px; }
+
+    @media (max-width: 900px) {
+      .about-hero { grid-template-columns: 1fr; min-height: auto; }
+      .about-hero-left { padding: 140px 24px 60px; }
+      .about-hero-right { height: 50vh; }
+      .philosophy-layout { grid-template-columns: 1fr; gap: 60px; }
+      .philosophy-stats { gap: 2px; }
+      .values-grid { grid-template-columns: 1fr; }
+      .photo-strip { grid-template-columns: 1fr; height: auto; }
+      .photo-strip-img { height: 280px; }
+      .photo-strip-img:nth-child(2), .photo-strip-img:nth-child(3) { display: none; }
+      .team-layout { grid-template-columns: 1fr; gap: 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo-text">The Central View</a>
+    <div class="nav-links">
+      <a href="city-view.html">Rooms</a>
+      <a href="location.html">Location</a>
+      <a href="about.html">About</a>
+      <a href="reviews.html">Reviews</a>
+      <a href="booking.html" class="nav-book">Reserve</a>
+    </div>
+    <div class="nav-hamburger" id="hamburger"><span></span><span></span></div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <span class="mobile-close" id="mobileClose">✕</span>
+    <a href="index.html">Home</a>
+    <a href="city-view.html">Rooms</a>
+    <a href="location.html">Location</a>
+    <a href="about.html">About</a>
+    <a href="reviews.html">Reviews</a>
+    <a href="faq.html">FAQ</a>
+    <a href="booking.html">Reserve →</a>
+  </div>
+
+  <!-- HERO -->
+  <header class="about-hero">
+    <div class="about-hero-left reveal">
+      <span class="eyebrow" style="color:var(--accent)">About The Central View</span>
+      <h1>Twenty-one rooms.<br>One singular view.<br><em>Countless reasons to return.</em></h1>
+      <p class="lead">We built The Central View because we believed Vlorë deserved a hotel that matched the drama of its landscape. A place made with patience, not haste. With local hands, not imported formulas.</p>
+    </div>
+    <div class="about-hero-right">
+      <img src="https://res.cloudinary.com/dr63qmw21/image/upload/v1780254562/1_v2cave.jpg" alt="The Central View hotel exterior, Vlorë Albania">
+    </div>
+  </header>
+
+  <!-- PHILOSOPHY -->
+  <section class="philosophy">
+    <div class="container">
+      <div class="philosophy-layout">
+        <div class="philosophy-text reveal">
+          <span class="eyebrow">Our Philosophy</span>
+          <h2>Small on purpose.<br>Extraordinary<br>by design.</h2>
+          <p>Twenty-one rooms is a deliberate choice. It means we can know our guests by name. It means breakfast is prepared fresh each morning, not assembled in bulk. It means when you need something, there is a human on the other end — not a system.</p>
+          <p>We are not a chain hotel that happened to open in Albania. We are Albanian, and we are proud of it. Our design draws from local stone and Adriatic light. Our breakfast table carries honey from Gjirokastra and cheese from the hills behind the city.</p>
+          <p>The Central View exists at the intersection of international hospitality standards and genuine Albanian warmth. Not one or the other — both, at once.</p>
+        </div>
+        <div class="philosophy-stats reveal">
+          <div class="stat-block">
+            <span class="stat-block-num">21</span>
+            <span class="stat-block-label">Rooms & Suites</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-block-num">360°</span>
+            <span class="stat-block-label">Panoramic Views</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-block-num">5★</span>
+            <span class="stat-block-label">Guest Rating</span>
+          </div>
+          <div class="stat-block" style="background:var(--bg-light)">
+            <span class="stat-block-num">7'</span>
+            <span class="stat-block-label">Walk to the Sea</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHOTO STRIP -->
+  <div class="photo-strip">
+    <div class="photo-strip-img">
+      <img src="https://res.cloudinary.com/dr63qmw21/image/upload/v1780254562/1_v2cave.jpg" alt="Hotel terrace view over Vlorë">
+    </div>
+    <div class="photo-strip-img">
+      <img src="https://res.cloudinary.com/dr63qmw21/image/upload/v1780254562/1_v2cave.jpg" alt="Adriatic Suite interior">
+    </div>
+    <div class="photo-strip-img">
+      <img src="https://res.cloudinary.com/dr63qmw21/image/upload/v1780254562/1_v2cave.jpg" alt="Rooftop breakfast at The Central View">
+    </div>
+  </div>
+
+  <!-- VALUES -->
+  <section class="values">
+    <div class="container">
+      <span class="eyebrow reveal">What We Stand For</span>
+      <h2 class="section-title reveal">Built on three beliefs.</h2>
+      <div class="values-grid">
+        <div class="value-card reveal">
+          <span class="value-num">I</span>
+          <h3>Honest Hospitality</h3>
+          <p>We don't perform warmth. We practice it. Our team is trained to listen, to anticipate, and to help — not to upsell. When you ask for a local restaurant recommendation, you'll get the one we'd send a friend to, not the one with a commission.</p>
+        </div>
+        <div class="value-card reveal">
+          <span class="value-num">II</span>
+          <h3>Local First</h3>
+          <p>Our breakfast sourcing is hyperlocal. Our stone is from Albanian quarries. Our artwork is by Albanian artists. We believe travel should leave value in the places it touches — and we put that belief into every purchasing decision.</p>
+        </div>
+        <div class="value-card reveal">
+          <span class="value-num">III</span>
+          <h3>Unhurried Quality</h3>
+          <p>We opened slowly and deliberately. We would rather get the details right than open quickly. A turned-down bed with local lavender. A handwritten note at check-in. A breakfast served when you want it, not when it's convenient for us.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM QUOTE -->
+  <section class="team">
+    <div class="container">
+      <div class="team-layout">
+        <div class="team-quote reveal">
+          Albania doesn't need more tourism. It needs the right kind. We are trying to be the right kind.
+        </div>
+        <div class="team-body reveal">
+          <span class="eyebrow">Our Promise</span>
+          <h2>A stay you'll<br>remember for the<br>right reasons.</h2>
+          <p>We measure our success not by occupancy rates but by return bookings and by the messages guests send after they leave. By the photographs they share. By the friends they recommend us to.</p>
+          <p>Vlorë is changing. Albania is opening. We intend to grow with it — carefully, sustainably, and always with the same attention to detail that we started with.</p>
+          <a href="story.html" class="btn-outline-dark">Read Our Full Story →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">The Central View</div>
+        <p class="footer-brand-desc">A boutique hotel perched above Vlorë, Albania — where the Adriatic meets the mountains.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Stay</div>
+        <ul>
+          <li><a href="city-view.html">City View Room</a></li>
+          <li><a href="adriatic-suite.html">Adriatic Suite</a></li>
+          <li><a href="penthouse-360.html">Penthouse 360°</a></li>
+          <li><a href="booking.html">Book Direct</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Explore</div>
+        <ul>
+          <li><a href="location.html">Location</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="story.html">Our Story</a></li>
+          <li><a href="reviews.html">Reviews</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Contact</div>
+        <ul>
+          <li><a href="tel:+35569123456">+355 69 123 4567</a></li>
+          <li><a href="mailto:stay@thecentralview.al">stay@thecentralview.al</a></li>
+          <li><a href="https://wa.me/35569123456">WhatsApp Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 The Central View. All rights reserved.</span>
+      <span><a href="privacy-policy.html" style="color:rgba(255,255,255,0.35)">Privacy Policy</a></span>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('opaque', window.scrollY > 60);
+    });
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.add('open');
+    });
+    document.getElementById('mobileClose').addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.remove('open');
+    });
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

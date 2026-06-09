@@ -1,0 +1,17 @@
+{
+  "framework": null,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/city-view", "destination": "/city-view.html" },
+    { "source": "/adriatic-suite", "destination": "/adriatic-suite.html" },
+    { "source": "/penthouse-360", "destination": "/penthouse-360.html" },
+    { "source": "/booking", "destination": "/booking.html" },
+    { "source": "/reviews", "destination": "/reviews.html" },
+    { "source": "/location", "destination": "/location.html" },
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/story", "destination": "/story.html" },
+    { "source": "/faq", "destination": "/faq.html" },
+    { "source": "/privacy-policy", "destination": "/privacy-policy.html" }
+  ]
+}

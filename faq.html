@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ | The Central View · Vlorë, Albania</title>
+  <meta name="description" content="Frequently asked questions about The Central View boutique hotel in Vlorë, Albania. Booking, cancellation, check-in, beach access, transfers, and more.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="_shared.css">
+  <script src="data.js"></script>
+
+  <!-- FAQ Schema -->
+  <script type="application/ld+json" id="faq-schema"></script>
+
+  <style>
+    .faq-hero {
+      padding: 180px 40px 80px;
+      background: var(--bg-dark);
+      color: var(--white);
+    }
+    .faq-hero-inner { max-width: 900px; margin: 0 auto; }
+    .faq-hero h1 { font-size: clamp(52px, 8vw, 96px); margin-bottom: 24px; }
+    .faq-hero .lead { font-size: 18px; color: rgba(255,255,255,0.55); max-width: 500px; line-height: 1.7; }
+
+    .faq-section { padding: 100px 0; }
+    .faq-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .faq-sidebar {
+      position: sticky;
+      top: 100px;
+    }
+    .faq-sidebar h3 {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+    .faq-sidebar p { font-size: 14px; color: #666; line-height: 1.7; margin-bottom: 24px; }
+    .faq-sidebar .btn-whatsapp { font-size: 11px; padding: 14px 24px; }
+
+    /* ACCORDION */
+    .accordion { border-top: 1px solid var(--border); }
+    .acc-item { border-bottom: 1px solid var(--border); }
+    .acc-trigger {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 28px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      text-align: left;
+      gap: 20px;
+    }
+    .acc-trigger:hover .acc-question { color: var(--accent); }
+    .acc-question {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 400;
+      transition: color 0.3s;
+      line-height: 1.2;
+    }
+    .acc-icon {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.3s, border-color 0.3s;
+      font-size: 18px;
+      color: var(--text-muted);
+    }
+    .acc-item.open .acc-icon { transform: rotate(45deg); border-color: var(--accent); color: var(--accent); }
+    .acc-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .acc-item.open .acc-body { max-height: 400px; }
+    .acc-body-inner {
+      padding: 0 60px 32px 0;
+      font-size: 16px;
+      color: #555;
+      line-height: 1.8;
+    }
+
+    .faq-cta {
+      background: var(--accent);
+      padding: 80px 40px;
+      text-align: center;
+    }
+    .faq-cta h2 { font-size: clamp(32px, 5vw, 56px); color: var(--bg-dark); margin-bottom: 12px; }
+    .faq-cta p { color: rgba(28,28,26,0.65); font-size: 16px; margin-bottom: 32px; }
+    .faq-cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    @media (max-width: 900px) {
+      .faq-hero { padding: 140px 24px 60px; }
+      .faq-layout { grid-template-columns: 1fr; gap: 48px; }
+      .faq-sidebar { position: static; }
+      .acc-trigger { padding: 22px 0; }
+      .acc-question { font-size: 18px; }
+      .acc-body-inner { padding-right: 0; }
+      .faq-cta { padding: 60px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo-text">The Central View</a>
+    <div class="nav-links">
+      <a href="city-view.html">Rooms</a>
+      <a href="location.html">Location</a>
+      <a href="about.html">About</a>
+      <a href="reviews.html">Reviews</a>
+      <a href="booking.html" class="nav-book">Reserve</a>
+    </div>
+    <div class="nav-hamburger" id="hamburger"><span></span><span></span></div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <span class="mobile-close" id="mobileClose">✕</span>
+    <a href="index.html">Home</a>
+    <a href="city-view.html">Rooms</a>
+    <a href="location.html">Location</a>
+    <a href="about.html">About</a>
+    <a href="reviews.html">Reviews</a>
+    <a href="faq.html">FAQ</a>
+    <a href="booking.html">Reserve →</a>
+  </div>
+
+  <!-- HERO -->
+  <header class="faq-hero">
+    <div class="faq-hero-inner reveal">
+      <span class="eyebrow" style="color:var(--accent)">FAQ</span>
+      <h1>Questions<br>& Answers.</h1>
+      <p class="lead">Everything you need to know before you arrive. If something isn't here, just ask us directly — we reply fast.</p>
+    </div>
+  </header>
+
+  <!-- FAQ SECTION -->
+  <section class="faq-section">
+    <div class="container">
+      <div class="faq-layout">
+        <!-- SIDEBAR -->
+        <aside class="faq-sidebar reveal">
+          <h3>Can't find your answer?</h3>
+          <p>We're always available on WhatsApp and typically reply within a few minutes during daytime hours.</p>
+          <a href="https://wa.me/35569123456?text=Hi, I have a question about The Central View" class="btn-whatsapp">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp Us
+          </a>
+          <div style="margin-top:40px">
+            <div class="footer-col-title" style="margin-bottom:14px">Quick Links</div>
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:13px">
+              <a href="booking.html">→ Book a room</a>
+              <a href="location.html">→ How to get here</a>
+              <a href="city-view.html">→ View room options</a>
+              <a href="reviews.html">→ Read guest reviews</a>
+            </div>
+          </div>
+        </aside>
+
+        <!-- ACCORDION -->
+        <div class="accordion reveal" id="accordion">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="faq-cta">
+    <h2>Ready to book?</h2>
+    <p>Direct bookings always get our best rate and full flexibility.</p>
+    <div class="faq-cta-btns">
+      <a href="booking.html" class="btn-dark">Reserve a Room →</a>
+      <a href="https://wa.me/35569123456" class="btn-whatsapp">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Ask on WhatsApp
+      </a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">The Central View</div>
+        <p class="footer-brand-desc">A boutique hotel perched above Vlorë, Albania — where the Adriatic meets the mountains.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Stay</div>
+        <ul>
+          <li><a href="city-view.html">City View Room</a></li>
+          <li><a href="adriatic-suite.html">Adriatic Suite</a></li>
+          <li><a href="penthouse-360.html">Penthouse 360°</a></li>
+          <li><a href="booking.html">Book Direct</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Explore</div>
+        <ul>
+          <li><a href="location.html">Location</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="story.html">Our Story</a></li>
+          <li><a href="reviews.html">Reviews</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Contact</div>
+        <ul>
+          <li><a href="tel:+35569123456">+355 69 123 4567</a></li>
+          <li><a href="mailto:stay@thecentralview.al">stay@thecentralview.al</a></li>
+          <li><a href="https://wa.me/35569123456">WhatsApp Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 The Central View. All rights reserved.</span>
+      <span><a href="privacy-policy.html" style="color:rgba(255,255,255,0.35)">Privacy Policy</a></span>
+    </div>
+  </footer>
+
+  <script>
+    // Build accordion from data.js FAQS
+    const acc = document.getElementById('accordion');
+    FAQS.forEach((faq, i) => {
+      acc.innerHTML += `
+        <div class="acc-item" id="acc-${i}">
+          <button class="acc-trigger" onclick="toggleAcc(${i})">
+            <span class="acc-question">${faq.q}</span>
+            <span class="acc-icon">+</span>
+          </button>
+          <div class="acc-body">
+            <div class="acc-body-inner">${faq.a}</div>
+          </div>
+        </div>`;
+    });
+
+    // Build FAQ schema
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": FAQS.map(f => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a }
+      }))
+    };
+    document.getElementById('faq-schema').textContent = JSON.stringify(schema, null, 2);
+
+    function toggleAcc(i) {
+      const item = document.getElementById('acc-' + i);
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.acc-item.open').forEach(el => el.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    }
+
+    // Nav
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => nav.classList.toggle('opaque', window.scrollY > 60));
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileMenu').classList.add('open'));
+    document.getElementById('mobileClose').addEventListener('click', () => document.getElementById('mobileMenu').classList.remove('open'));
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
