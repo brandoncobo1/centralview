@@ -1,0 +1,186 @@
+/* =============================================
+   THE CENTRAL VIEW — Shared Styles
+   Used across all inner pages
+   ============================================= */
+
+:root {
+  --bg-light:  #F8F5F0;
+  --bg-dark:   #1C1C1A;
+  --accent:    #C9B99A;
+  --text-main: #1C1C1A;
+  --text-muted:#888;
+  --border:    #E4E0D8;
+  --white:     #FFFFFF;
+  --font-serif:'Cormorant Garamond', serif;
+  --font-sans: 'DM Sans', sans-serif;
+  --transition:0.4s ease;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background:var(--bg-light);
+  color:var(--text-main);
+  font-family:var(--font-sans);
+  font-weight:300;
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4 { font-family:var(--font-serif); font-weight:400; line-height:1.1; }
+a { text-decoration:none; color:inherit; transition:var(--transition); }
+ul { list-style:none; }
+img { max-width:100%; display:block; object-fit:cover; }
+
+/* ---------- NAV ---------- */
+nav {
+  position:fixed; top:0; left:0; width:100%; z-index:1000;
+  padding:28px 40px;
+  display:flex; justify-content:space-between; align-items:center;
+  transition: background 0.4s ease, padding 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+  background:transparent;
+  color: var(--white);  /* white text on transparent hero */
+}
+nav.opaque {
+  background:var(--white);
+  color: var(--text-main); /* dark text once scrolled */
+  padding:18px 40px;
+  box-shadow:0 2px 20px rgba(0,0,0,0.06);
+}
+.nav-logo-text {
+  font-family:var(--font-serif);
+  font-size:22px;
+  letter-spacing:0.08em;
+}
+.nav-links {
+  display:flex; gap:32px; align-items:center;
+  font-size:12px; letter-spacing:0.12em; text-transform:uppercase;
+}
+.nav-links a:hover { color:var(--accent); }
+.nav-book {
+  border:1px solid currentColor;
+  padding:10px 24px;
+  font-size:11px; letter-spacing:0.15em; text-transform:uppercase;
+  transition:var(--transition);
+}
+nav.opaque .nav-book:hover { background:var(--text-main); color:var(--white); }
+nav:not(.opaque) .nav-book:hover { background:rgba(255,255,255,0.15); }
+/* Inner pages with light heroes always need dark nav */
+nav.opaque-always {
+  background: var(--white) !important;
+  color: var(--text-main) !important;
+  padding: 18px 40px !important;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.06) !important;
+}
+.nav-hamburger { display:none; cursor:pointer; flex-direction:column; gap:5px; }
+.nav-hamburger span { width:24px; height:1px; background:currentColor; transition:0.3s; display:block; }
+.mobile-menu {
+  display:none; position:fixed; inset:0; background:var(--white); z-index:999;
+  flex-direction:column; align-items:center; justify-content:center; gap:36px;
+  font-family:var(--font-serif); font-size:36px;
+}
+.mobile-menu.open { display:flex; }
+.mobile-menu a { opacity:0.8; }
+.mobile-menu a:hover { opacity:1; color:var(--accent); }
+.mobile-close { position:absolute; top:28px; right:32px; font-size:28px; cursor:pointer; font-family:var(--font-sans); }
+
+/* ---------- PAGE HERO (inner pages) ---------- */
+.page-hero {
+  padding: 180px 40px 100px;
+  max-width:1000px;
+  margin:0 auto;
+}
+.page-hero .eyebrow {
+  font-size:11px; letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--accent); margin-bottom:24px; display:block;
+}
+.page-hero h1 {
+  font-size:clamp(48px, 7vw, 88px);
+  line-height:1.0;
+  margin-bottom:28px;
+}
+.page-hero .lead {
+  font-size:18px; color:#666; max-width:560px; line-height:1.7;
+}
+
+/* ---------- SECTION HELPERS ---------- */
+.section { padding:100px 0; }
+.section-dark { background:var(--bg-dark); color:var(--white); }
+.container { max-width:1300px; margin:0 auto; padding:0 40px; }
+.eyebrow {
+  font-size:11px; letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--accent); margin-bottom:20px; display:block;
+}
+.section-title { font-size:clamp(36px, 5vw, 56px); margin-bottom:24px; }
+.divider { width:60px; height:1px; background:var(--accent); margin:40px 0; }
+
+/* ---------- BUTTONS ---------- */
+.btn-dark {
+  display:inline-block;
+  background:var(--bg-dark); color:var(--white);
+  padding:16px 40px;
+  font-size:11px; letter-spacing:0.2em; text-transform:uppercase;
+  transition:var(--transition);
+}
+.btn-dark:hover { background:#333; color:var(--white); }
+.btn-outline-dark {
+  display:inline-block;
+  border:1px solid var(--bg-dark);
+  padding:14px 38px;
+  font-size:11px; letter-spacing:0.15em; text-transform:uppercase;
+  transition:var(--transition);
+}
+.btn-outline-dark:hover { background:var(--bg-dark); color:var(--white); }
+.btn-whatsapp {
+  display:inline-flex; align-items:center; gap:10px;
+  background:#25D366; color:var(--white);
+  padding:16px 36px;
+  font-size:11px; letter-spacing:0.15em; text-transform:uppercase;
+  transition:var(--transition);
+}
+.btn-whatsapp:hover { background:#1ebe5d; color:var(--white); }
+.btn-whatsapp svg { flex-shrink:0; }
+
+/* ---------- REVEAL ANIMATIONS ---------- */
+.reveal { opacity:0; transform:translateY(28px); transition:opacity 0.7s ease, transform 0.7s ease; }
+.reveal.active { opacity:1; transform:none; }
+
+/* ---------- FOOTER ---------- */
+footer {
+  background:var(--bg-dark); color:var(--white);
+  padding:80px 40px 40px;
+}
+.footer-grid {
+  max-width:1300px; margin:0 auto;
+  display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr;
+  gap:60px; padding-bottom:60px;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.footer-brand-name { font-family:var(--font-serif); font-size:28px; margin-bottom:16px; }
+.footer-brand-desc { font-size:13px; color:rgba(255,255,255,0.5); line-height:1.8; }
+.footer-col-title { font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--accent); margin-bottom:20px; }
+.footer-col ul { display:flex; flex-direction:column; gap:12px; }
+.footer-col ul a { font-size:13px; color:rgba(255,255,255,0.6); }
+.footer-col ul a:hover { color:var(--white); }
+.footer-bottom {
+  max-width:1300px; margin:0 auto;
+  padding-top:32px;
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:11px; color:rgba(255,255,255,0.35); letter-spacing:0.08em;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:900px) {
+  nav { padding:20px 24px; }
+  nav.opaque { padding:16px 24px; }
+  .nav-links { display:none; }
+  .nav-hamburger { display:flex; }
+  .page-hero { padding:140px 24px 80px; }
+  .container { padding:0 24px; }
+  .section { padding:72px 0; }
+  .footer-grid { grid-template-columns:1fr 1fr; gap:40px; }
+}
+@media (max-width:600px) {
+  .footer-grid { grid-template-columns:1fr; }
+  .footer-bottom { flex-direction:column; gap:12px; text-align:center; }
+}
